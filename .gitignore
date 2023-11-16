@@ -1,0 +1,6 @@
+target/
+.spin/
+
+.idea/
+
+.DS_Store
