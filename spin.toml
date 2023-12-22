@@ -6,13 +6,20 @@ version = "0.1.0"
 authors = ["xiaosongfu <xiaosong.fu@outlook.com>"]
 description = "abiui api server"
 
+[variables]
+jwt_secret = { secret = true, default = "abiui-dev" }
+
 [[trigger.http]]
 route = "/..."
 component = "abiui-api"
 
 [component.abiui-api]
 source = "target/wasm32-wasi/release/abiui_api.wasm"
-allowed_outbound_hosts = []
+environment = { DB_URL = "host=ep-dawn-unit-82200717.us-east-1.postgres.vercel-storage.com user=default password=xxx dbname=verceldb"}
+key_value_stores = ["default"]
+allowed_outbound_hosts = ["postgres://ep-dawn-unit-82200717.us-east-1.postgres.vercel-storage.com:5432"]
+[component.abiui-api.variables]
+jwt_secret = "{{ jwt_secret }}"
 [component.abiui-api.build]
 command = "cargo build --target wasm32-wasi --release"
 watch = ["src/**/*.rs", "Cargo.toml"]
